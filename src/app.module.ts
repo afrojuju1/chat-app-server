@@ -3,6 +3,8 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { PostgresConnectionOptions } from 'typeorm/driver/postgres/PostgresConnectionOptions';
+import { UserModule } from './modules/user/user.module';
+import { MessageModule } from './modules/message/message.module';
 
 /*
 POSTGRES_HOST=127.0.0.1
@@ -37,12 +39,15 @@ const options: PostgresConnectionOptions = {
   password: 'nopassword',
   database: 'chat_app_db',
   entities: [__dirname + '/**/*.entity{.ts,.js}'],
-  synchronize: true,
+  synchronize: true, // todo: set to false
+  logging: true, // todo: set to false
 }
 
 @Module({
   imports: [
     TypeOrmModule.forRoot(options),
+    UserModule,
+    MessageModule,
   ],
   controllers: [AppController],
   providers: [AppService],
