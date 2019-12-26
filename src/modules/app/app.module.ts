@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { PostgresConnectionOptions } from 'typeorm/driver/postgres/PostgresConnectionOptions';
-import { UserModule } from './modules/user/user.module';
-import { MessageModule } from './modules/message/message.module';
+import { UserModule } from '../user/user.module';
+import { MessageModule } from '../message/message.module';
+import { AppGateway } from './app.gateway';
 
 /*
 POSTGRES_HOST=127.0.0.1
@@ -17,20 +17,6 @@ MODE=DEV
 RUN_MIGRATIONS=true
  */
 
-/***
- * TypeOrmModule.forRootAsync({
-  useFactory: () => ({
-    type: 'mysql',
-    host: 'localhost',
-    port: 3306,
-    username: 'root',
-    password: 'root',
-    database: 'test',*/
-    // entities: [__dirname + '/**/*.entity{.ts,.js}'],
-// synchronize: true,
-// }),
-// });
-//  */
 const options: PostgresConnectionOptions = {
   type: 'postgres',
   host: 'localhost',
@@ -38,7 +24,7 @@ const options: PostgresConnectionOptions = {
   username: 'chat_app_user',
   password: 'nopassword',
   database: 'chat_app_db',
-  entities: [__dirname + '/**/*.entity{.ts,.js}'],
+  entities: [__dirname + '/../**/*.entity{.ts,.js}'],
   synchronize: true, // todo: set to false
   logging: true, // todo: set to false
 }
@@ -49,7 +35,7 @@ const options: PostgresConnectionOptions = {
     UserModule,
     MessageModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [],
+  providers: [AppService, AppGateway],
 })
 export class AppModule {}
